@@ -7,3 +7,8 @@ export { default as AddPost } from './AddPost/AddPost';
 export { default as Stories } from './Stories/Stories';
 export { default as Post } from './Post/Post';
 export { default as Comments } from './Comments/Comments';
+export { default as FriendRequests } from './FriendRequests/FriendRequests';
+export { default as Birthdays } from './Birthdays/Birthdays';
+export { default as Advertisements } from './Advertisements/Advertisements';
+export { default as UserInfoCard } from './UserInfoCard/UserInfoCard';
+export { default as UserMediaCard } from './UserMediaCard/UserMediaCard';
