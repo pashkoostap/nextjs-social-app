@@ -12,3 +12,4 @@ export { default as Birthdays } from './Birthdays/Birthdays';
 export { default as Advertisements } from './Advertisements/Advertisements';
 export { default as UserInfoCard } from './UserInfoCard/UserInfoCard';
 export { default as UserMediaCard } from './UserMediaCard/UserMediaCard';
+export { default as ProfileCard } from './ProfileCard/ProfileCard';

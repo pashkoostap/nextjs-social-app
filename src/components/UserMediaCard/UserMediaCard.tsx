@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const UserMediaCard = ({ userId }: { userId: string }) => (
@@ -8,6 +9,19 @@ const UserMediaCard = ({ userId }: { userId: string }) => (
       <Link href='/' className='text-blue-500 text-xs'>
         See all
       </Link>
+    </div>
+
+    <div className='flex justify-between flex-wrap gap-4'>
+      {[...new Array(8)].map((_, i) => (
+        <div className='relative w-1/5 h-20' key={i}>
+          <Image
+            src='https://images.pexels.com/photos/23964497/pexels-photo-23964497/free-photo-of-portrait-of-a-man-wearing-a-black-suit.jpeg?auto=compress&cs=tinysrgb&w=200&dpr=2'
+            alt=''
+            fill
+            className='object-cover rounded-md'
+          />
+        </div>
+      ))}
     </div>
   </div>
 );
