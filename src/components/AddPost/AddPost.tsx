@@ -4,24 +4,24 @@ import Image from 'next/image';
 import { prisma } from '@/lib/prismaClient';
 
 const AddPost = () => {
-  const formAction = async (formData: FormData) => {
-    'use server';
-    try {
-      const userId = 'user_2rAc1SuGhfJncg1v4PyaqQiW7v8';
+  // const formAction = async (formData: FormData) => {
+  //   'use server';
+  //   try {
+  //     const userId = 'user_2rAc1SuGhfJncg1v4PyaqQiW7v8';
 
-      const res = await prisma.post.create({
-        data: {
-          description: formData.get('description') as string,
-          userId,
-        },
-      });
+  //     const res = await prisma.post.create({
+  //       data: {
+  //         description: formData.get('description') as string,
+  //         userId,
+  //       },
+  //     });
 
-      console.log(res);
-    } catch (err) {
-      console.info(formData);
-      debugger;
-    }
-  };
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.info(formData);
+  //     debugger;
+  //   }
+  // };
 
   return (
     <div className='p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm'>
@@ -33,7 +33,7 @@ const AddPost = () => {
         className='w-10 h-10 rounded-full'
       />
 
-      <form className='flex-1' action={formAction}>
+      <form className='flex-1'>
         <div className='flex flex-1 items-end gap-4'>
           <textarea
             name='description'

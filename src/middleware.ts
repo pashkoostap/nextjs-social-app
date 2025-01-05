@@ -9,7 +9,7 @@ export const config = {
   ],
 };
 
-const isRouteProtected = createRouteMatcher(['/settings(.*)']);
+const isRouteProtected = createRouteMatcher(['/settings(.*)', '/']);
 
 export default clerkMiddleware(async (auth, req) => {
   if (isRouteProtected(req)) {
