@@ -1,8 +1,38 @@
 import { Feed, LeftMenu, RightMenu } from '@/components';
+import { getUserName, isUserBlocked } from '@/lib';
+import { prisma } from '@/lib';
+import { auth } from '@clerk/nextjs/server';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
-const ProfilePage = () => {
+const ProfilePage = async ({ params }: { params: { username: string } }) => {
+  const { username } = await params;
+  const user = await prisma.user.findFirst({
+    where: { username },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          followings: true,
+          posts: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    return notFound();
+  }
+
+  const { userId: currentUserId } = await auth();
+
+  const isBlocked = await isUserBlocked(user.id, currentUserId as string);
+
+  if (isBlocked) {
+    return notFound();
+  }
+
   return (
     <div className='flex gap-6 pt-6'>
       <div className='hidden lg:block w-[20%]'>
@@ -13,32 +43,37 @@ const ProfilePage = () => {
           <div className='flex flex-col items-center justify-center'>
             <div className='relative w-full h-64'>
               <Image
-                src='https://images.pexels.com/photos/23964497/pexels-photo-23964497/free-photo-of-portrait-of-a-man-wearing-a-black-suit.jpeg?auto=compress&cs=tinysrgb&w=200&dpr=2'
+                src={
+                  user.cover ||
+                  'https://images.pexels.com/photos/23964497/pexels-photo-23964497/free-photo-of-portrait-of-a-man-wearing-a-black-suit.jpeg?auto=compress&cs=tinysrgb&w=200&dpr=2'
+                }
                 alt=''
                 fill
                 className='object-cover rounded-md'
               />
               <Image
-                src='https://images.pexels.com/photos/23964497/pexels-photo-23964497/free-photo-of-portrait-of-a-man-wearing-a-black-suit.jpeg?auto=compress&cs=tinysrgb&w=200&dpr=2'
+                src={user.avatar as string}
                 alt=''
                 width={128}
                 height={128}
                 className='rounded-full w-32 h-32 absolute left-0 right-0 -bottom-16 m-auto ring-4 ring-white z-10'
               />
             </div>
-            <h1 className='mt-20 mb-4 text-2xl font-bold'>User Name</h1>
+            <h1 className='mt-20 mb-4 text-2xl font-bold'>
+              {getUserName(user)}
+            </h1>
             <div className='flex items-center justify-center gap-12 mb-4'>
               {[
                 {
-                  value: 123,
+                  value: user._count.posts,
                   title: 'Posts',
                 },
                 {
-                  value: '1.2K',
+                  value: user._count.followers,
                   title: 'Followers',
                 },
                 {
-                  value: '1.3K',
+                  value: user._count.followings,
                   title: 'Following',
                 },
               ].map((metric, i) => (
@@ -53,7 +88,7 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className='hidden lg:block w-[30%]'>
-        <RightMenu userId='userId' />
+        <RightMenu user={user} />
       </div>
     </div>
   );

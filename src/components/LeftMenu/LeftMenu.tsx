@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ProfileCard from '../ProfileCard/ProfileCard';
+import ProfileCard from './components/ProfileCard/ProfileCard';
 import classNames from 'classnames';
 import Advertisements from '../Advertisements/Advertisements';
 

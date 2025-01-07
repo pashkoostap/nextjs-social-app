@@ -1,7 +1,7 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
-import { prisma } from '@/lib/prismaClient';
+import { prisma } from '@/lib';
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
@@ -71,6 +71,7 @@ export async function POST(req: Request) {
       });
     } catch (err) {
       if (err instanceof Error) {
+        console.error(err);
         return new Response(err.message, { status: 500 });
       }
     }
@@ -93,6 +94,26 @@ export async function POST(req: Request) {
         status: 200,
       });
     } catch (err) {
+      console.error(err);
+      if (err instanceof Error) {
+        return new Response(err.message, { status: 500 });
+      }
+    }
+  }
+
+  if (eventType === 'user.deleted') {
+    try {
+      const deleted = await prisma.user.delete({
+        where: {
+          id: evt.data.id,
+        },
+      });
+
+      return new Response(`User ${deleted.username} has been deleted`, {
+        status: 200,
+      });
+    } catch (err) {
+      console.error(err);
       if (err instanceof Error) {
         return new Response(err.message, { status: 500 });
       }

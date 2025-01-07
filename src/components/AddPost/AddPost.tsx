@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
 
-import { prisma } from '@/lib/prismaClient';
+import { prisma } from '@/lib';
 
 const AddPost = () => {
   // const formAction = async (formData: FormData) => {

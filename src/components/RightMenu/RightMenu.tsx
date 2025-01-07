@@ -1,16 +1,21 @@
-import { Fragment } from 'react';
+import { Fragment, Suspense } from 'react';
 import Advertisements from '../Advertisements/Advertisements';
-import Birthdays from '../Birthdays/Birthdays';
-import FriendRequests from '../FriendRequests/FriendRequests';
-import UserInfoCard from '../UserInfoCard/UserInfoCard';
-import UserMediaCard from '../UserMediaCard/UserMediaCard';
+import Birthdays from './components/Birthdays/Birthdays';
+import FriendRequests from './components/FriendRequests/FriendRequests';
+import UserInfoCard from './components/UserInfoCard/UserInfoCard';
+import UserMediaCard from './components/UserMediaCard/UserMediaCard';
+import { User } from '@/lib';
 
-const RightMenu = ({ userId }: { userId?: string }) => (
+const RightMenu = ({ user }: { user?: User }) => (
   <div className='flex flex-col gap-6'>
-    {userId ? (
+    {user?.id ? (
       <Fragment>
-        <UserInfoCard userId={userId} />
-        <UserMediaCard userId={userId} />
+        <Suspense fallback='Fetching...'>
+          <UserInfoCard user={user} />
+        </Suspense>
+        <Suspense fallback='Fetching...'>
+          <UserMediaCard user={user} />
+        </Suspense>
       </Fragment>
     ) : null}
     <FriendRequests />
